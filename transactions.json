@@ -1,0 +1,112 @@
+{
+  "transactions": [
+    {
+      "id": "tx1",
+      "date": "2025-02-20T10:15:00Z",
+      "from": "0788000111",
+      "to": "123456",
+      "description": "Customer payment - Kota + Spiral Potato",
+      "type": "credit",
+      "amount": 5500
+    },
+    {
+      "id": "tx2",
+      "date": "2025-02-20T11:30:00Z",
+      "from": "123456",
+      "to": "0788000001",
+      "description": "Transfer from business to personal wallet",
+      "type": "debit",
+      "amount": 10000
+    },
+    {
+      "id": "tx3",
+      "date": "2025-02-19T18:45:00Z",
+      "from": "0788000001",
+      "to": "MTN-AIRTIME",
+      "description": "Airtime purchase",
+      "type": "debit",
+      "amount": 2000
+    },
+    {
+      "id": "tx4",
+      "date": "2025-02-19T19:10:00Z",
+      "from": "0788123456",
+      "to": "0788000001",
+      "description": "Personal MoMo from friend",
+      "type": "credit",
+      "amount": 15000
+    },
+    {
+      "id": "tx5",
+      "date": "2025-02-21T09:05:00Z",
+      "from": "0788999999",
+      "to": "123456",
+      "description": "Southern Flames pop-up - Chicken wings combo",
+      "type": "credit",
+      "amount": 9000
+    },
+    {
+      "id": "tx6",
+      "date": "2025-02-21T10:20:00Z",
+      "from": "0788111000",
+      "to": "123456",
+      "description": "Lunch order - Kota special",
+      "type": "credit",
+      "amount": 7500
+    },
+    {
+      "id": "tx7",
+      "date": "2025-02-21T12:05:00Z",
+      "from": "0788000001",
+      "to": "CASH-OUT-AGENT-001",
+      "description": "Cash-out at agent",
+      "type": "debit",
+      "amount": 30000
+    },
+    {
+      "id": "tx8",
+      "date": "2025-02-22T14:30:00Z",
+      "from": "7890123",
+      "to": "0788000001",
+      "description": "Refund from event organiser",
+      "type": "credit",
+      "amount": 20000
+    },
+    {
+      "id": "tx9",
+      "date": "2025-02-22T16:15:00Z",
+      "from": "0788000222",
+      "to": "123456",
+      "description": "Customer payment - Southern soul plate",
+      "type": "credit",
+      "amount": 12000
+    },
+    {
+      "id": "tx10",
+      "date": "2025-02-23T09:45:00Z",
+      "from": "0788333444",
+      "to": "123456",
+      "description": "Breakfast order - Chips & sausage",
+      "type": "credit",
+      "amount": 4500
+    },
+    {
+      "id": "tx11",
+      "date": "2025-02-23T11:00:00Z",
+      "from": "0788000001",
+      "to": "123456",
+      "description": "Float top-up to business till",
+      "type": "credit",
+      "amount": 20000
+    },
+    {
+      "id": "tx12",
+      "date": "2025-02-23T13:20:00Z",
+      "from": "0788777666",
+      "to": "0788000001",
+      "description": "Personal MoMo from family",
+      "type": "credit",
+      "amount": 50000
+    }
+  ]
+}

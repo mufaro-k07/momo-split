@@ -7,15 +7,107 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header class="app-header">
-        <div class="container">
-            <h1>MomoSplit</h1>
-            <h2>Your Mobile Money Transaction Organiser</h2>
-            <p class="subtitle">
-                Separate your business and personal mobile money transactions with ease.
-            </p>
+    <div class="container">
+        <h1>MomoSplit</h1>
+        <h2>Your Mobile Money Transaction Organiser</h2>
+        <p class="subtitle">
+            Separate your business and personal mobile money transactions with ease.
+        </p>
+        <!-- For the message bar -->
+        <div id="messageBar" class="message-bar hidden"></div>
+
+        <!-- For the Settings section -->
+        <div class="settings-box">
+            <h3>Settings</h3>
+            <p>Enter your Momo personal number and merchant code:</p>
+
+            <label for="personalNum">Personal MoMo Number</label>
+            <input type="text" id="personalNum" placeholder="e.g. 0788..." />
+
+            <label for="merchantCode">Merchant Code</label>
+            <input type="text" id="merchantCode" placeholder="e.g. 123456" />
+
+            <button id="applySettingsBtn">Apply Settings</button>
         </div>
-    </header>
+
+        <!-- Now creating the Summary Cards -->
+        <div class="summary">
+            <div class="card">
+                <h3>Business Inflow</h3>
+                <div id="businessInflow">RWF 0</div>
+            </div>
+            <div class="card">
+                <h3>Personal Inflow</h3>
+                <div id="personalInflow">RWF 0</div>
+            </div>
+            <div class="card">
+                <h3>Business Count</h3>
+                <div id="businessCount">0</div>
+            </div>
+        </div>
+
+        <!-- The filters -->
+        <div class="filters">
+
+            <div> class="filter-group">
+                <label for="typeFilter">Transaction Type</label>
+                <select id="typeFilter">
+                    <option value="all">All Types</option>
+                    <option value="business">Business</option>
+                    <option value="personal">Personal</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="directionFilter">Cashflow</label>
+                <select id="directionFilter">
+                    <option value="all">All / Both</option>
+                    <option value="credit">Money IN</option>
+                    <option value="debit">Money OUT</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="searchInput">Search</label>
+                <input type="text" id="searchInput" placeholder="Search MoMo transactions..." />
+
+            </div>
+
+            <div class="filter-group">
+                <label for="sortSelect">Sort By</label>
+                <select id="sortSelect">
+                    <option value="date_desc">Most Recent</option>
+                    <option value="date_asc">Oldest First</option>
+                    <option value="amount_desc">Amount Highest → Low</option>
+                    <option value="amount_asc">Amount Lowest → Highest</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Designing the Transactions Table -->
+        <table>
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Cashflow</th>
+                <th>Amount</th>
+                <th>Category</th>
+            </tr>
+            </thead>
+            <tbody id="transactionsBody">
+
+            </tbody>
+        </table>
+
+    </div>
+
+<! Including the Javascript file -->
+<script src="app.js"></script>
 
 </body>
 </html>

@@ -88,6 +88,7 @@ async function fetchTransactionsFromAPI() {
             from: item.from,
             to: item.to,
             description: item.description || "",
+            name: item.name || "",
             direction: (item.type || "").toLowerCase() === "credit" ? "credit" : "debit", // I use type and direction here because the JSON has 'type'
             amount: Number(item.amount) || "0",
         }));
@@ -180,7 +181,7 @@ function getFilteredAndSortedTransactions() {
     // Allowing search across from, to ,description
     if (searchTerm) {
         result = result.filter((tx) => {
-            const combined = `${tx.from} ${tx.to} ${tx.description}`.toLowerCase();
+            const combined = `${tx.from} ${tx.to} ${tx.name} ${tx.description}`.toLowerCase();
             return combined.includes(searchTerm);
         });
     }
@@ -232,12 +233,16 @@ function renderFilteredTransactions() {
         toTd.textContent =tx.to;
         tr.appendChild(toTd);
 
+        const nameTd = document.createElement("td");
+        nameTd.textContent = tx.name || "";
+        tr.appendChild(nameTd);
+
         const descTd = document.createElement("td");
         descTd.textContent = tx.description;
         tr.appendChild(descTd);
 
         const dirTd = document.createElement("td");
-        dirTd.textContent = tx.direction === "credit" ? "Incoming" : "Outgoing";
+        dirTd.textContent = tx.direction === "credit" ? "Money IN" : "Money OUT";
         tr.appendChild(dirTd);
 
         const amountTd = document.createElement("td");

@@ -87,8 +87,8 @@ async function fetchTransactionsFromAPI() {
             date: item.date,
             from: item.from,
             to: item.to,
-            description: item.description || "",
             name: item.name || "",
+            description: item.description || "",
             direction: (item.type || "").toLowerCase() === "credit" ? "credit" : "debit", // I use type and direction here because the JSON has 'type'
             amount: Number(item.amount) || "0",
         }));

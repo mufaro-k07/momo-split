@@ -1,7 +1,13 @@
 // This is main application which contains the api configuration
 
-// fetching the raw http file which is essentially the api
-const API_URL = "https://raw.githubusercontent.com/mufaro-k07/momo-split/refs/heads/main/transactions.json"
+// Base Url for the mock Momo API( this is using the local proxy)
+const BASE_URL = "https://69241e1d3ad095fb8472c4a0.mockapi.io";
+
+// Endpoints being used
+const TRANSACTIONS_ENDPOINT = `${BASE_URL}/transactions`;
+// const SUMMARY_ENDPOINT = `${BASE_URL}/transactions/summary`;
+
+ const BACKUP_API = "https://raw.githubusercontent.com/mufaro-k07/momo-split/refs/heads/main/transactions.json"
 
 // Creating a fallback given the API fails
 
@@ -29,7 +35,7 @@ let allTransactions = [
 // creating an array for the different categories
 let classifiedTransactions = [];
 
-// Getting the elements from the HTML
+// Getting the elements from the HTML DOM
 
 const personalNumInput = document.getElementById("personalNum");
 const merchantCodeInput = document.getElementById("merchantCode");
@@ -54,8 +60,17 @@ let settings = {
 
 // function to help in showing or hiding messages
 function showMessage(message, type = "info") {
+    if (!messageBar) return;
+
     messageBar.textContent = message;
-    messageBar.className = "message-bar " + type;
+    messageBar.className = "message-bar";
+    if (type === "error") {
+        messageBar.classList.add("message-error");
+    } else if (type === "success") {
+        messageBar.classList.add("message-success");
+    } else {
+        messageBar.classList.add("message-info")
+    }
 }
 
 function clearMessage() {
@@ -64,34 +79,42 @@ function clearMessage() {
 }
 
 // Fetching Transactions from external API
-// Essentially this functions fetches the GitHub raw JSON which was created
+// We are fetching paginated transactions from the external MOMO API, and using page 0.
+// Essentially this functions fetches the GitHub raw JSON which was created as the backup.
 
 async function fetchTransactionsFromAPI() {
     try {
         showMessage("Loading transactions from server....", "info");
 
-        const response = await fetch(API_URL);
+        // Using the primary mockapi endpoint
+        const response = await fetch(TRANSACTIONS_ENDPOINT);
 
         if (!response.ok) {
             throw new Error(`HTTP status ${response.status}`);
         }
 
         const data = await response.json();
+        console.log("API raw response", data);
 
-        if (!data.transactions || !Array.isArray(data.transactions)) {
-            throw new Error(`No transactions found for ${response.status}, 'transactions' array is missing`);
+        if (!Array.isArray(data) || data.length === 0) {
+            throw new Error(`No transactions found for ${response.status}, 'transactions' array is missing/empty`);
         }
 
-        allTransactions = data.transactions.map((item) => ({
-            id: item.id,
-            date: item.date,
-            from: item.from,
-            to: item.to,
-            name: item.name || "",
-            description: item.description || "",
-            direction: (item.type || "").toLowerCase() === "credit" ? "credit" : "debit", // I use type and direction here because the JSON has 'type'
-            amount: Number(item.amount) || "0",
-        }));
+        allTransactions = data.map((item) => {
+            const rawType = (item.type || "").toLowerCase();
+            const direction = rawType === "credit" ? "credit" : "debit";
+
+            return {
+                id: item.id,
+                date: item.date,
+                from: item.from,
+                to: item.to,
+                name: item.name || "",
+                description: item.description || "",
+                direction,
+                amount: Number(item.amount) || 0
+            };
+        });
 
         classifyTransactions();
         showMessage("Transactions successfully loaded.", "info");
@@ -100,9 +123,74 @@ async function fetchTransactionsFromAPI() {
         showMessage("Could not load transactions from server..., Showing the local fallback data instead.",
             "error");
 
-        classifyTransactions();
+        // Trying the fallback data which is the GitHub JSON
+        try {
+            const backupResp = await fetch(BACKUP_API);
+
+            if (!backupResp.ok) {
+                throw new Error(`Backup API HTTP status ${backupResp.status}`);
+            }
+
+            const backupData = await backupResp.json();
+            console.log("Backup API raw response", backupData);
+
+            if (!backupData.transactions || !Array.isArray(backupData.transactions) || backupData.transactions.length === 0) {
+                throw new Error("Backup API returned no transactions");
+            }
+
+            allTransactions = backupData.transactions.map((item) => {
+                const rawType = (item.type || "").toLowerCase();
+                const direction = rawType === "credit" ? "credit" : "debit";
+
+                return {
+                    id: item.id,
+                    date: item.date,
+                    from: String(item.from || ""),
+                    to: String(item.to || ""),
+                    name: item.name || "",
+                    description: item.description || "",
+                    direction,
+                    amount: Number(item.amount) || 0
+                };
+            });
+
+            classifyTransactions();
+            showMessage("Transactions loaded from backup data source.", "success");
+        } catch (backupErr) {
+            console.error("Failed to load transactions from backup API:", backupErr);
+
+            // the last fallback
+            showMessage(
+                "Could not load from server or backup. Showing local fallback data.",
+                "error"
+            );
+
+            allTransactions = allTransactions.map((tx) => ({
+                ...tx,
+                from: String(tx.from || ""),
+                to: String(tx.to || ""),
+                direction: (tx.direction || "").toLowerCase() === "credit" ? "credit" : "debit",
+                amount: Number(tx.amount) || 0
+            }));
+
+            classifyTransactions();
+        }
     }
 }
+
+// Fetching the summary statistics from the API
+// async function fetchSummary () {
+//     try {
+//         const response = await fetch(SUMMARY_ENDPOINT);
+//         if (!response.ok) {
+//             throw new Error(`Summary HTTP status ${response.status}`);
+//         }
+//         const summary = await response.json();
+//         console.log("API Summary:", summary);
+//     } catch (e) {
+//         console.error("Could not fetch summary from API:", e);
+//     }
+// }
 
 // Making the classification function
 /**
@@ -211,7 +299,7 @@ function renderFilteredTransactions() {
     if (rows.length === 0) {
         const tr = document.createElement("tr");
         const td = document.createElement("td");
-        td.colSpan = 7;
+        td.colSpan = 8;
         td.textContent = "No transactions found for the selected filters.";
         tr.appendChild(td);
         transactionsBody.appendChild(tr);
@@ -241,9 +329,9 @@ function renderFilteredTransactions() {
         descTd.textContent = tx.description;
         tr.appendChild(descTd);
 
-        const dirTd = document.createElement("td");
-        dirTd.textContent = tx.direction === "credit" ? "Money IN" : "Money OUT";
-        tr.appendChild(dirTd);
+        const cashTd = document.createElement("td");
+        cashTd.textContent = tx.direction === "credit" ? "Money IN" : "Money OUT";
+        tr.appendChild(cashTd);
 
         const amountTd = document.createElement("td");
         amountTd.textContent = tx.amount.toLocaleString();
@@ -288,22 +376,20 @@ applySettingsBtn.addEventListener("click", () => {
 
     classifyTransactions();
     clearMessage();
-    showMessage("Settings applied. Transactions reclassified.", "info");
+    showMessage("Settings applied. Transactions reclassified.", "success");
 });
 
 typeFilterEl.addEventListener("change", renderFilteredTransactions);
 directionFilterEl.addEventListener("change", renderFilteredTransactions);
-searchInputEl.addEventListener("input", () => {
-    renderFilteredTransactions();
-});
+searchInputEl.addEventListener("input", renderFilteredTransactions);
 sortSelectEl.addEventListener("change", renderFilteredTransactions);
 
-
-// init
+// Initialisation
 
 async function init() {
     clearMessage();
     await fetchTransactionsFromAPI();
+    await fetchSummary(); // this is for debugging
 }
 
 init();

@@ -8,48 +8,59 @@
 </head>
 <body>
     <div class="container">
-        <h1>MomoSplit</h1>
-        <h2>Your Mobile Money Transaction Organiser</h2>
-        <p class="subtitle">
-            Separate your business and personal mobile money transactions with ease.
-        </p>
+        <header class="header">
+            <h1>MomoSplit</h1>
+            <h2>Your Mobile Money Transaction Organiser</h2>
+            <p class="subtitle">
+                Separate your business and personal mobile money transactions with ease.😎
+            </p>
+        </header>
+
         <!-- For the message bar -->
         <div id="messageBar" class="message-bar hidden"></div>
 
         <!-- For the Settings section -->
-        <div class="settings-box">
+        <section class="settings-box">
             <h3>Settings</h3>
-            <p>Enter your Momo personal number and merchant code:</p>
+            <p>Enter your Momo personal number and/or merchant code:</p>
 
-            <label for="personalNum">Personal MoMo Number</label>
-            <input type="text" id="personalNum" placeholder="e.g. 0788..." />
+            <div class="settings-grid">
+                <div class="field">
+                    <label for="personalNum">Personal MoMo Number</label>
+                    <input type="text" id="personalNum" placeholder="e.g. 0788..." />
+                </div>
+            </div>
 
-            <label for="merchantCode">Merchant Code</label>
-            <input type="text" id="merchantCode" placeholder="e.g. 123456" />
+            <div class="field">
+                <label for="merchantCode">Merchant Code</label>
+                <input type="text" id="merchantCode" placeholder="e.g. 123456" />
+            </div>
 
-            <button id="applySettingsBtn">Apply Settings</button>
-        </div>
+            <div class="field field-button">
+                <button id="applySettingsBtn">Apply</button>
+            </div>
+        </section>
 
         <!-- Now creating the Summary Cards -->
         <div class="summary">
             <div class="card">
                 <h3>Business Inflow</h3>
-                <div id="businessInflow">RWF 0</div>
+                <div id="businessInflow" class="summary-value">RWF 0</div>
             </div>
             <div class="card">
                 <h3>Personal Inflow</h3>
-                <div id="personalInflow">RWF 0</div>
+                <div id="personalInflow" class="summary-value">RWF 0</div>
             </div>
             <div class="card">
                 <h3>Business Count</h3>
-                <div id="businessCount">0</div>
+                <div id="businessCount" class="summary-value">0</div>
             </div>
         </div>
 
         <!-- The filters -->
-        <div class="filters">
+        <section class="filters">
 
-            <div> class="filter-group">
+            <div class="filter-group">
                 <label for="typeFilter">Transaction Type</label>
                 <select id="typeFilter">
                     <option value="all">All Types</option>
@@ -68,7 +79,7 @@
                 </select>
             </div>
 
-            <div class="filter-group">
+            <div class="filter-group filter-wide">
                 <label for="searchInput">Search</label>
                 <input type="text" id="searchInput" placeholder="Search MoMo transactions..." />
 
@@ -83,27 +94,28 @@
                     <option value="amount_asc">Amount Lowest → Highest</option>
                 </select>
             </div>
-        </div>
+        </section>
 
         <!-- Designing the Transactions Table -->
-        <table>
-            <thead>
-            <tr>
-                <th>Date</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Cashflow</th>
-                <th>Amount</th>
-                <th>Category</th>
-            </tr>
-            </thead>
-            <tbody id="transactionsBody">
+        <section class="table-section">
+            <table>
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Cashflow</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                </tr>
+                </thead>
+                <tbody id="transactionsBody">
 
-            </tbody>
-        </table>
-
+                </tbody>
+            </table>
+        </section>
     </div>
 
 <! Including the Javascript file -->

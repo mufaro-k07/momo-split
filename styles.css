@@ -1,155 +1,306 @@
-body {
-    font-family: Arial, sans-serif;
-    background: #f7f7f7;
-    margin: 0;
-    padding: 20px;
+/* Base */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
-h1 {
-    margin-bottom: 10px;
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f5f6fa;
+    color: #5f1854; /*8A2BE2(purple) just as a back up colour*/
 }
 
 .container {
-    max-width: 1000px;
-    margin: auto;
+    max-width: 1100px;
+    margin: 32px auto 48px;
+    padding: 0 16px 40px;
 }
 
-/* ------------------------- */
-/* Message Bar */
-/* ------------------------- */
+/* Styling the header, this includes the main titles */
+.header h1 {
+    text-align: center;
+    margin: 0;
+    font-size: 2.4rem;
+    background-color: #f7f7f7;
+}
+
+.header h2 {
+    text-align: center;
+    margin: 8px 0 4px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #1abb9c;
+}
+
+.subtitle {
+    text-align: center;
+    margin: 0 0 24px;
+    color: #666;
+}
+
+/* Styling the Message Bar which shows the settings messages and any other application of settings done */
 .message-bar {
-    padding: 10px;
-    margin-bottom: 15px;
+    padding: 10px 14px;
     border-radius: 6px;
-    font-weight: bold;
-    display: block;
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+    transition: opacity 0.2s ease;
 }
 
-.message-bar.info {
-    background: #e8f3ff;
-    color: #005bbb;
-}
-
-.message-bar.error {
-    background: #ffe8e8;
-    color: #bb0000;
-}
-
-.hidden {
+.message-bar.hidden {
     display: none;
 }
 
-/* ------------------------- */
-/* Settings Section */
-/* ------------------------- */
+.message-info {
+    background: #e6f0ff;
+    color: #224b9b;
+    border: 1px solid #c2d6ff;
+}
+
+.message-success {
+    background: #e6f7ec;
+    color: #1f7a3a;
+    border: 1px solid #bfe8cd;
+}
+
+.message-error {
+    background: #ffecec;
+    color: #b3261e;
+    border: 1px solid #ffc4c4;
+}
+
+/* Styling the Setting section */
 .settings-box {
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px 20px 18px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
 }
 
-.settings-box input {
-    padding: 10px;
-    margin-right: 10px;
-    width: 200px;
+.settings-box h3 {
+    margin-top: 0;
+    margin-bottom: 6px;
 }
 
-/* ------------------------- */
-/* Summary Cards */
-/* ------------------------- */
+.settings-box p {
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: #555;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1.2fr auto;
+    gap: 16px;
+    align-items: end;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.9rem;
+}
+
+.field label {
+    font-weight: 500;
+    color: #444;
+}
+
+.field input {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #d0d4dd;
+    font-size: 0.95rem;
+}
+
+.field input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+}
+
+.field-button {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+button#applySettingsBtn {
+    padding: 10px 18px;
+    border-radius: 6px;
+    border: none;
+    background: #8b104e;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+button#applySettingsBtn:hover {
+    background: #8b103a;
+}
+
+/* Styling the Summary Cards */
+
 .summary {
     display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
 }
 
 .card {
-    flex: 1;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
+    flex: 1 1 0;
+    min-width: 200px;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 18px 20px;
+    box-shadow: 0 2px 3px rgba(15, 23, 42, 0.08);
     text-align: center;
 }
 
 .card h3 {
-    margin-bottom: 10px;
+    margin: 0 0 6px;
 }
 
-/* ------------------------- */
-/* Filters */
-/* ------------------------- */
-.filters {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+.summary-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #111827;
 }
 
-.filters select,
-.filters input {
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
-
-/* ------------------------- */
-/* Table */
-/* ------------------------- */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-th,
-td {
-    padding: 12px;
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
-}
-
-th {
-    background: #fafafa;
-}
-
-/* Category Pill */
-.category-pill {
-    padding: 5px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    color: white;
-}
-
-.category-business {
-    background: #007bff;
-}
-
-.category-personal {
-    background: #28a745;
-}
-
-.category-other {
-    background: #6c757d;
-}
+/* Styling the Filters section */
 
 .filters {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
     flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-end;
+    margin-bottom: 20px;
 }
 
 .filter-group {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    min-width: 150px;
+    font-size: 0.9rem;
+}
+
+.filter-wide {
+    flex: 1 1 260px;
 }
 
 .filter-group label {
-    font-size: 12px;
+    font-weight: 500;
+    color: #1abb9c;
+}
+
+.filters select,
+.filters input {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #d0d4dd;
+    font-size: 0.9rem;
+}
+
+.filters select:focus,
+.filters input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+}
+
+/* Styling the Table */
+.table-section {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+thead {
+    background: #f3f4f6;
+}
+
+thead th {
+    text-align: left;
+    padding: 10px 12px;
+    font-weight: 600;
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+tbody td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #f1f3f5;
+    vertical-align: top;
+}
+
+tbody tr:nth-child(even) {
+    background: #fafbfc;
+}
+
+/* Styling the Category Section on the table */
+.category-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.category-business {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.category-personal {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.category-other {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+/* Adding the Responsiveness of the application */
+@media (max-width: 768px) {
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .field-button {
+        justify-content: stretch;
+    }
+
+    button#applySettingsBtn {
+        width: 100%;
+    }
+
+    .summary {
+        flex-direction: column;
+    }
+
+    thead th:nth-child(4),  /* Name */
+    thead th:nth-child(5) { /* Description */
+        min-width: 160px;
+    }
 }

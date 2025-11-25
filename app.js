@@ -249,7 +249,7 @@ function updateSummary() {
  */
 
 function getFilteredAndSortedTransactions() {
-    const typeFilter = typeFilterEl.value; // all, business, personal, other
+    const typeFilter = typeFilterEl.value; // this filter will allow to show all, business, personal, other
     const directionFilter = directionFilterEl.value; // all, credit, debit
     const searchTerm = searchInputEl.value.trim().toLowerCase();
     const sortBy = sortSelectEl.value;
@@ -266,7 +266,7 @@ function getFilteredAndSortedTransactions() {
         result = result.filter((tx) => tx.direction === directionFilter);
     }
 
-    // Allowing search across from, to ,description
+    // Allowing search across from, to, name, description
     if (searchTerm) {
         result = result.filter((tx) => {
             const combined = `${tx.from} ${tx.to} ${tx.name} ${tx.description}`.toLowerCase();
@@ -389,7 +389,7 @@ sortSelectEl.addEventListener("change", renderFilteredTransactions);
 async function init() {
     clearMessage();
     await fetchTransactionsFromAPI();
-    await fetchSummary(); // this is for debugging
+    // await fetchSummary(); // this is for debugging
 }
 
 init();

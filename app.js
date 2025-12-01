@@ -52,6 +52,7 @@ const sortSelectEl = document.getElementById("sortSelect");
 
 const messageBar = document.getElementById("messageBar");
 const transactionsBody = document.getElementById("transactionsBody");
+const retryBtn = document.getElementById("retryBtn");
 
 let settings = {
     personalNum: "",
@@ -59,7 +60,7 @@ let settings = {
 };
 
 // function to help in showing or hiding messages
-function showMessage(message, type = "info") {
+function showMessage(message, type = "info", showRetry = false) {
     if (!messageBar) return;
 
     messageBar.textContent = message;
@@ -71,11 +72,20 @@ function showMessage(message, type = "info") {
     } else {
         messageBar.classList.add("message-info")
     }
+
+    if (retryBtn) {
+        retryBtn.classList.toggle("hidden", !showRetry);
+        retryBtn.disabled = !showRetry;
+    }
 }
 
 function clearMessage() {
     messageBar.textContent = "";
     messageBar.className = "message-bar hidden";
+    if (retryBtn) {
+        retryBtn.classList.add("hidden");
+        retryBtn.disabled = true;
+    }
 }
 
 // Fetching Transactions from external API
@@ -85,6 +95,10 @@ function clearMessage() {
 async function fetchTransactionsFromAPI() {
     try {
         showMessage("Loading transactions from server....", "info");
+        if (retryBtn) {
+            retryBtn.classList.add("hidden");
+            retryBtn.disabled = true;
+        }
 
         // Using the primary mockapi endpoint
         const response = await fetch(TRANSACTIONS_ENDPOINT);
@@ -121,7 +135,9 @@ async function fetchTransactionsFromAPI() {
     } catch (err) {
         console.error("Failed to load transactions from API:", err);
         showMessage("Could not load transactions from server..., Showing the local fallback data instead.",
-            "error");
+            "error",
+            false
+        );
 
         // Trying the fallback data which is the GitHub JSON
         try {
@@ -162,7 +178,8 @@ async function fetchTransactionsFromAPI() {
             // the last fallback
             showMessage(
                 "Could not load from server or backup. Showing local fallback data.",
-                "error"
+                "error",
+                true
             );
 
             allTransactions = allTransactions.map((tx) => ({
@@ -300,7 +317,7 @@ function renderFilteredTransactions() {
         const tr = document.createElement("tr");
         const td = document.createElement("td");
         td.colSpan = 8;
-        td.textContent = "No transactions found for the selected filters.";
+        td.textContent = "No transactions available. Try adjusting your filters or check your connection.";
         tr.appendChild(td);
         transactionsBody.appendChild(tr);
         return;
@@ -383,6 +400,12 @@ typeFilterEl.addEventListener("change", renderFilteredTransactions);
 directionFilterEl.addEventListener("change", renderFilteredTransactions);
 searchInputEl.addEventListener("input", renderFilteredTransactions);
 sortSelectEl.addEventListener("change", renderFilteredTransactions);
+if (retryBtn) {
+    retryBtn.addEventListener("click", async () => {
+        showMessage("Retrying transaction load...", "info", false);
+        await fetchTransactionsFromAPI();
+    });
+}
 
 // Initialisation
 

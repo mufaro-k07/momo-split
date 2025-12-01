@@ -14,15 +14,21 @@
             <p class="subtitle">
                 Separate your business and personal mobile money transactions with ease.😎
             </p>
+            <p class="app-intro">
+                MomoSplit helps you separate personal and business mobile money inflows on a single wallet.
+                Enter your personal MoMo number and your business merchant code, and we’ll classify each transaction for you.
+            </p>
         </header>
 
         <!-- For the message bar -->
         <div id="messageBar" class="message-bar hidden"></div>
+        <button id="retryBtn" class="retry-btn hidden">Retry loading transactions</button>
 
         <!-- For the Settings section -->
         <section class="settings-box">
             <h3>Settings</h3>
             <p>Enter your Momo personal number and/or merchant code:</p>
+
 
             <div class="settings-grid">
                 <div class="field">
@@ -35,6 +41,11 @@
                 <label for="merchantCode">Merchant Code</label>
                 <input type="text" id="merchantCode" placeholder="e.g. 123456" />
             </div>
+
+            <p class="settings-help">
+                For this demo, try personal MoMo <strong>0788000001</strong> and merchant code <strong>123456</strong>.
+                You can still type any valid Rwandan-style number starting with <code>07</code>.
+            </p>
 
             <div class="field field-button">
                 <button id="applySettingsBtn">Apply</button>
@@ -120,6 +131,10 @@
 
 <! Including the Javascript file -->
 <script src="app.js"></script>
+<footer class="server-tag">
+    Served by: <span class="server-name">MomoSplit server</span>
+    <p> Made by Mufaro, with love 💚</p>
+</footer>
 
 </body>
 </html>
